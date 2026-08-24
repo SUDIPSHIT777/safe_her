@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safe_her/features/auth/login/widget/coustombutton.dart';
@@ -30,7 +31,7 @@ class Loginpage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     "Welcome Back ,",
                     style: GoogleFonts.poppins(
                       fontSize: screenwidth * 0.06,
@@ -40,7 +41,7 @@ class Loginpage extends StatelessWidget {
                   ),
                 ),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     "Brave Warrior! 💪 ,",
                     style: GoogleFonts.poppins(
                       fontSize: screenwidth * 0.06,
@@ -51,7 +52,7 @@ class Loginpage extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     'Login to continue your journey',
                     style: GoogleFonts.poppins(
                       color: themecolor.onSurfaceVariant,
@@ -60,7 +61,7 @@ class Loginpage extends StatelessWidget {
                   ),
                 ),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     'towards safety and empowerment.',
                     style: GoogleFonts.poppins(
                       color: themecolor.onSurfaceVariant,
@@ -77,7 +78,7 @@ class Loginpage extends StatelessWidget {
                       spacing: 5,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        AutoSizeText(
                           'Email or Phone Number',
                           style: GoogleFonts.poppins(
                             color: themecolor.onSurface,
@@ -94,7 +95,7 @@ class Loginpage extends StatelessWidget {
                           suffixIcon: null,
                         ),
                         SizedBox(height: 10),
-                        Text(
+                        AutoSizeText(
                           'Password',
                           style: GoogleFonts.poppins(
                             color: themecolor.onSurface,
@@ -145,7 +146,7 @@ class Loginpage extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text(
+                      child: AutoSizeText(
                         'or Continue with',
                         style: GoogleFonts.poppins(
                           color: themecolor.onSurfaceVariant.withValues(
@@ -167,6 +168,29 @@ class Loginpage extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 googleButton(context: context, onPressed: () {}),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AutoSizeText(
+                      'don`t have an account? ',
+                      style: GoogleFonts.poppins(
+                        color: themecolor.onSurfaceVariant,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: AutoSizeText(
+                        'Sign up',
+                        style: GoogleFonts.poppins(
+                          color: themecolor.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

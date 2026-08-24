@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +25,7 @@ Widget customGradientButton({
         borderRadius: BorderRadius.circular(15),
         onTap: onPressed,
         child: Center(
-          child: Text(
+          child: AutoSizeText(
             text,
             style: GoogleFonts.poppins(
               color: themecolor.onPrimary,
@@ -61,7 +62,7 @@ Widget googleButton({
         children: [
           Image.asset('assets/google.png', width: 27, height: 27),
           const SizedBox(width: 20),
-          Text(
+          AutoSizeText(
             'Continue with Google',
             style: GoogleFonts.poppins(
               color: themeColor.onSurface,
