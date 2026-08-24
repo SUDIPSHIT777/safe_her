@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safe_her/features/auth/login/widget/coustombutton.dart';
+import 'package:safe_her/shared_widget/coustombutton.dart';
 import 'package:safe_her/features/auth/login/widget/textformfield.dart';
 
 class Loginpage extends StatelessWidget {
@@ -24,10 +24,15 @@ class Loginpage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                Container(
-                  color: Colors.amber,
-                  width: double.infinity,
-                  child: Image.asset('assets/loginimg.png', fit: BoxFit.cover),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Image.asset(
+                      'assets/loginimg.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Center(
@@ -42,7 +47,7 @@ class Loginpage extends StatelessWidget {
                 ),
                 Center(
                   child: AutoSizeText(
-                    "Brave Warrior! 💪 ,",
+                    "Brave Warrior! 💪",
                     style: GoogleFonts.poppins(
                       fontSize: screenwidth * 0.06,
                       fontWeight: FontWeight.w500,
