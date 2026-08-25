@@ -1,0 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class UserModel {
+  final String uid;
+  final String name;
+  final String email;
+  final String? phoneNumber;
+  final String role;
+  final bool isProfileComplete;
+  final Timestamp? createdAt;
+  final Timestamp? updatedAt;
+
+  UserModel({
+    required this.uid,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    this.role = 'user',
+    this.isProfileComplete = true,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'] ?? '',
+      name: map['name'] ?? 'User',
+      email: map['email'] ?? '',
+      phoneNumber: map['phoneNumber'],
+      role: map['role'] ?? 'user',
+      createdAt: map['createdAt'] as Timestamp?,
+      updatedAt: map['updatedAt'] as Timestamp?,
+      isProfileComplete: map['isProfileComplete'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'name': name,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'role': role,
+      'isProfileComplete': isProfileComplete,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
+  }
+}

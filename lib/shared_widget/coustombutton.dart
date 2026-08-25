@@ -42,7 +42,7 @@ Widget customGradientButton({
 // ================= Google Button ===================
 Widget googleButton({
   required BuildContext context,
-  required VoidCallback onPressed,
+  required VoidCallback? onPressed,
 }) {
   final themeColor = Theme.of(context).colorScheme;
 
