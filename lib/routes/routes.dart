@@ -14,17 +14,7 @@ class Routes {
       GoRoute(path: '/splash', builder: (context, state) => Splashscreen()),
       GoRoute(
         path: '/home',
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: const HomePage(),
-            transitionDuration: const Duration(milliseconds: 400),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-          );
-        },
+        
       ),
     ],
   );
