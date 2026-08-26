@@ -137,42 +137,12 @@ class Loginpage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                Consumer<Googlecontroller>(
-                  builder: (context, googlelogin, child) {
-                    if (googlelogin.isloading) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            width: 2,
-                            color: themecolor.onSurfaceVariant.withValues(
-                              alpha: 0.2,
-                            ),
-                          ),
-                        ),
-                        width: double.infinity,
-                        height: 56,
-                        child: Center(
-                          child: SizedBox(
-                            height: 25,
-                            width: 25,
-                            child: CircularProgressIndicator(strokeWidth: 3),
-                          ),
-                        ),
-                      );
-                    }
-                    return customGradientButton(
-                      context: context,
-                      onPressed: () async {
-                        final user = await googlelogin.googleSignin();
-                        if (user != null && context.mounted) {
-                          context.go('/signup');
-                        }
-                      },
-                      text: "Login",
-                    );
-                  },
+                customGradientButton(
+                  context: context,
+                  onPressed: () {},
+                  text: "Login",
                 ),
+
                 Row(
                   children: [
                     Expanded(
@@ -206,7 +176,41 @@ class Loginpage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 5),
-                googleButton(context: context, onPressed: () {}),
+                Consumer<Googlecontroller>(
+                  builder: (context, googlelogin, child) {
+                    if (googlelogin.isloading) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            width: 2,
+                            color: themecolor.onSurfaceVariant.withValues(
+                              alpha: 0.2,
+                            ),
+                          ),
+                        ),
+                        width: double.infinity,
+                        height: 56,
+                        child: Center(
+                          child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: CircularProgressIndicator(strokeWidth: 3),
+                          ),
+                        ),
+                      );
+                    }
+                    return googleButton(
+                      context: context,
+                      onPressed: () async {
+                        final user = await googlelogin.googleSignin();
+                        if (user != null && context.mounted) {
+                          context.go('/home');
+                        }
+                      },
+                    );
+                  },
+                ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -218,8 +222,11 @@ class Loginpage extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.go('/signup');
+                      },
                       child: AutoSizeText(
                         'Sign up',
                         style: GoogleFonts.poppins(

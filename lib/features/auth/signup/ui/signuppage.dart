@@ -4,21 +4,28 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_her/features/auth/signup/controller/googlecontroller.dart';
+import 'package:safe_her/features/auth/signup/controller/signupvalidation.dart';
+import 'package:safe_her/features/auth/storelogin.dart';
 import 'package:safe_her/shared_widget/coustombutton.dart';
 import 'package:safe_her/shared_widget/textformfield.dart';
 
-class Signuppage extends StatelessWidget {
+class Signuppage extends StatefulWidget {
   const Signuppage({super.key});
 
+  @override
+  State<Signuppage> createState() => _SignuppageState();
+}
+
+class _SignuppageState extends State<Signuppage> {
+  final TextEditingController username = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final themecolor = Theme.of(context).colorScheme;
     final screenwidth = MediaQuery.sizeOf(context).width;
-    final TextEditingController username = TextEditingController();
-    final TextEditingController email = TextEditingController();
-    final TextEditingController phone = TextEditingController();
-    final TextEditingController password = TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -97,6 +104,7 @@ class Signuppage extends StatelessWidget {
                         ),
                         customTextField(
                           context,
+                          validator: (v) => Validators.validateName(v),
                           controller: username,
                           hintText: "Enter Name",
                           keyboardType: TextInputType.text,
@@ -114,6 +122,7 @@ class Signuppage extends StatelessWidget {
                         ),
                         customTextField(
                           context,
+                          validator: (v) => Validators.validateEmail(v),
                           controller: email,
                           hintText: "Enter email",
                           keyboardType: TextInputType.text,
@@ -131,6 +140,7 @@ class Signuppage extends StatelessWidget {
                         ),
                         customTextField(
                           context,
+                          validator: (v) => Validators.validatePhone(v),
                           controller: phone,
                           hintText: "Enter phone number",
                           keyboardType: TextInputType.number,
@@ -148,6 +158,8 @@ class Signuppage extends StatelessWidget {
                         ),
                         customTextField(
                           context,
+                          validator: (value) =>
+                              Validators.validatePassword(value),
                           controller: password,
                           hintText: "Enter password",
                           keyboardType: TextInputType.text,
@@ -175,7 +187,13 @@ class Signuppage extends StatelessWidget {
                 SizedBox(height: 20),
                 customGradientButton(
                   context: context,
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      await StoreloginInfo.setlogin();
+                      if (!context.mounted) return;
+                      context.go('/splash');
+                    }
+                  },
                   text: "Sign Up",
                 ),
                 Row(
@@ -210,7 +228,7 @@ class Signuppage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Consumer<Googlecontroller>(
                   builder: (context, googlelogin, child) {
                     if (googlelogin.isloading) {
@@ -239,13 +257,13 @@ class Signuppage extends StatelessWidget {
                       context: context,
                       onPressed: () async {
                         final user = await googlelogin.googleSignin();
-                        if (user != null && context.mounted) {
-                          context.go('/signup');
-                        }
+                        if (user == null) return;
+                        await StoreloginInfo.setlogin();
+                        if (!context.mounted) return;
+                        context.go('/home');
                       },
                     );
                   },
-                  
                 ),
                 SizedBox(height: 10),
                 Row(
@@ -259,7 +277,9 @@ class Signuppage extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.go('/');
+                      },
                       child: AutoSizeText(
                         'Login',
                         style: GoogleFonts.poppins(
@@ -276,5 +296,14 @@ class Signuppage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    username.dispose();
+    phone.dispose();
+    password.dispose();
+    super.dispose();
   }
 }

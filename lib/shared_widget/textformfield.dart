@@ -8,9 +8,11 @@ Widget customTextField(
   Widget? suffixIcon,
   TextInputType? keyboardType,
   bool obscureText = false,
+  String? Function(String?)? validator,
 }) {
   final themecolor = Theme.of(context).colorScheme;
   return TextFormField(
+    validator: validator,
     controller: controller,
     autocorrect: true,
     cursorColor: themecolor.primary,
@@ -34,6 +36,11 @@ Widget customTextField(
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide(color: themecolor.primary, width: 2),
+      ),
+
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: themecolor.onError, width: 1),
       ),
     ),
   );
