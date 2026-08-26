@@ -19,11 +19,11 @@ class StoreloginInfo {
     await prefs.remove(_loginKey);
   }
 
-  static Future<void> isloggin(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 3));
-    final isLoggin = await isLoggedIn();
+  static Future<void> checkLoginStatus(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 4));
+    final isloggdin = await isLoggedIn();
     if (!context.mounted) return;
-    if (isLoggin) {
+    if (isloggdin) {
       context.go('/home');
     } else {
       context.go('/');

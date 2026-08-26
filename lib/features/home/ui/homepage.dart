@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safe_her/features/auth/storelogin.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,7 +10,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: GestureDetector(
           onTap: () {
-            StoreloginInfo.logout();
+            // StoreloginInfo.logout();
             if (!context.mounted) return;
             context.go('/');
           },
