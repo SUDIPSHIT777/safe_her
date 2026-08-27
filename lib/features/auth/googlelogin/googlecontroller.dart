@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:safe_her/features/auth/googlelogin.dart';
+import 'package:safe_her/features/auth/googlelogin/googlelogin.dart';
 
 class Googlecontroller extends ChangeNotifier {
   final Googlelogin googlelogin = Googlelogin();
@@ -23,5 +23,12 @@ class Googlecontroller extends ChangeNotifier {
       _isloading = false;
       notifyListeners();
     }
+  }
+
+  bool _visibility = false;
+  bool get visibility => _visibility;
+  void switchOnOff() {
+    _visibility = !_visibility;
+    notifyListeners();
   }
 }

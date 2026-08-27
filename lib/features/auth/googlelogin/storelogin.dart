@@ -20,7 +20,7 @@ class StoreloginInfo {
   }
 
   static Future<void> checkLoginStatus(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 5));
     final isloggdin = await isLoggedIn();
     if (!context.mounted) return;
     if (isloggdin) {

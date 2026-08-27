@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_her/features/auth/signup/controller/googlecontroller.dart';
+import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
+import 'package:safe_her/features/auth/signup/controller/signupcontroller.dart';
 import 'package:safe_her/features/auth/signup/controller/signupvalidation.dart';
-import 'package:safe_her/features/auth/storelogin.dart';
+import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/shared_widget/coustombutton.dart';
 import 'package:safe_her/shared_widget/textformfield.dart';
 
@@ -111,6 +115,7 @@ class _SignuppageState extends State<Signuppage> {
                           obscureText: false,
                           prefixIcon: Icons.person_3,
                           suffixIcon: null,
+                          autofillHints: const [AutofillHints.username],
                         ),
                         SizedBox(height: 10),
                         AutoSizeText(
@@ -129,6 +134,7 @@ class _SignuppageState extends State<Signuppage> {
                           obscureText: false,
                           prefixIcon: Icons.email,
                           suffixIcon: null,
+                          autofillHints: const [AutofillHints.email],
                         ),
                         SizedBox(height: 10),
                         AutoSizeText(
@@ -156,16 +162,29 @@ class _SignuppageState extends State<Signuppage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        customTextField(
-                          context,
-                          validator: (value) =>
-                              Validators.validatePassword(value),
-                          controller: password,
-                          hintText: "Enter password",
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          prefixIcon: Icons.lock,
-                          suffixIcon: Icon(Icons.visibility_off),
+                        Consumer<Googlecontroller>(
+                          builder: (context, toggle, child) {
+                            return customTextField(
+                              context,
+                              validator: (value) =>
+                                  Validators.validatePassword(value),
+                              controller: password,
+                              hintText: "Enter password",
+                              keyboardType: TextInputType.text,
+                              obscureText: !toggle.visibility,
+                              prefixIcon: Icons.lock,
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  toggle.switchOnOff();
+                                },
+                                icon: Icon(
+                                  toggle.visibility
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -185,16 +204,51 @@ class _SignuppageState extends State<Signuppage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                customGradientButton(
-                  context: context,
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      await StoreloginInfo.setlogin();
-                      if (!context.mounted) return;
-                      context.go('/splash');
-                    }
+                Consumer<Signupcontroller>(
+                  builder: (context, value, child) {
+                    return customGradientButton(
+                      context: context,
+                      text: "Sign Up",
+                      isLoading: value.signuploading,
+
+                      onPressed: value.signuploading
+                          ? null
+                          : () async {
+                              if (!formKey.currentState!.validate()) return;
+
+                              try {
+                                final user = await value.userSignup(
+                                  name: username.text.trim(),
+                                  email: email.text.trim(),
+                                  phone: phone.text.trim(),
+                                  password: password.text.trim(),
+                                );
+
+                                if (user == null || !context.mounted) return;
+
+                                await StoreloginInfo.setlogin();
+
+                                if (!context.mounted) return;
+                                context.go('/splash');
+                              } on FirebaseAuthException catch (e) {
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(e.message ?? 'Signup failed'),
+                                  ),
+                                );
+                              } catch (e) {
+                                log('SIGNUP ERROR: $e');
+
+                                if (!context.mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Signup failed: $e')),
+                                );
+                              }
+                            },
+                    );
                   },
-                  text: "Sign Up",
                 ),
                 Row(
                   children: [

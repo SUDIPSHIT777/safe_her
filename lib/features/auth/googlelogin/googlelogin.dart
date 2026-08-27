@@ -60,6 +60,7 @@ class Googlelogin {
         uid: user.uid,
         name: user.displayName ?? "",
         email: user.email ?? '',
+        photoURL: user.photoURL ?? '',
         phoneNumber: user.phoneNumber,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -70,28 +71,14 @@ class Googlelogin {
         'name': user.displayName,
         'email': user.email,
         'photoUrl': user.photoURL,
+        'phone': user.phoneNumber,
         'updatedAt': Timestamp.now(),
       });
     }
   }
 
-  User? get currentUser => _auth.currentUser;
 
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
-  // // ======= Phone Numbeer =======
-  // Future<void> updatePhoneNumber(String phoneNumber) async {
-  //   final user = _auth.currentUser;
-
-  //   if (user == null) {
-  //     throw Exception('User not logged in');
-  //   }
-  //   await _firestore.collection('users').doc(user.uid).update({
-  //     'phoneNumber': phoneNumber,
-  //     'isProfileComplete': true,
-  //     'updatedAt': Timestamp.now(),
-  //   });
-  // }
 }

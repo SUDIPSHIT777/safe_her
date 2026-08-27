@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 Widget customGradientButton({
   required BuildContext context,
   required String text,
-  required VoidCallback onPressed,
+  required VoidCallback? onPressed,
+  bool isLoading = false,
 }) {
   final themecolor = Theme.of(context).colorScheme;
 
@@ -15,7 +16,10 @@ Widget customGradientButton({
     height: 57,
     decoration: BoxDecoration(
       gradient: LinearGradient(
-        colors: [themecolor.primary, themecolor.secondary],
+        colors: [
+          themecolor.primary,
+          themecolor.secondary,
+        ],
       ),
       borderRadius: BorderRadius.circular(15),
     ),
@@ -23,22 +27,30 @@ Widget customGradientButton({
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: onPressed,
+        onTap: isLoading ? null : onPressed,
         child: Center(
-          child: AutoSizeText(
-            text,
-            style: GoogleFonts.poppins(
-              color: themecolor.onPrimary,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          child: isLoading
+              ? SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: themecolor.onPrimary,
+                    strokeWidth: 2.5,
+                  ),
+                )
+              : AutoSizeText(
+                  text,
+                  style: GoogleFonts.poppins(
+                    color: themecolor.onPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
         ),
       ),
     ),
   );
 }
-
 // ================= Google Button ===================
 Widget googleButton({
   required BuildContext context,

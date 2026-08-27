@@ -9,6 +9,7 @@ Widget customTextField(
   TextInputType? keyboardType,
   bool obscureText = false,
   String? Function(String?)? validator,
+  Iterable<String>? autofillHints,
 }) {
   final themecolor = Theme.of(context).colorScheme;
   return TextFormField(
@@ -18,7 +19,7 @@ Widget customTextField(
     cursorColor: themecolor.primary,
     keyboardType: keyboardType,
     obscureText: obscureText,
-
+    autofillHints: autofillHints,
     decoration: InputDecoration(
       filled: true,
       fillColor: themecolor.surface,
@@ -41,6 +42,10 @@ Widget customTextField(
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide(color: themecolor.onError, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: themecolor.primary, width: 2),
       ),
     ),
   );

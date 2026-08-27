@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_her/core/theme/theme.dart';
-import 'package:safe_her/features/auth/signup/controller/googlecontroller.dart';
+import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
+import 'package:safe_her/features/auth/signup/controller/signupcontroller.dart';
 import 'package:safe_her/firebase_options.dart';
 import 'package:safe_her/routes/routes.dart';
 
@@ -17,6 +18,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Googlecontroller()),
+        ChangeNotifierProvider(create: (context) => Signupcontroller()),
       ],
       child: const MyApp(),
     ),

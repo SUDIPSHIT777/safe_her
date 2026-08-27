@@ -4,6 +4,7 @@ class UserModel {
   final String uid;
   final String name;
   final String email;
+  final String? photoURL;
   final String? phoneNumber;
   final String role;
   final bool isProfileComplete;
@@ -16,6 +17,7 @@ class UserModel {
     required this.email,
     required this.phoneNumber,
     this.role = 'user',
+    this.photoURL,
     this.isProfileComplete = true,
     required this.createdAt,
     required this.updatedAt,
@@ -28,6 +30,7 @@ class UserModel {
       email: map['email'] ?? '',
       phoneNumber: map['phoneNumber'],
       role: map['role'] ?? 'user',
+      photoURL: map['photoURL'] ?? 'null',
       createdAt: map['createdAt'] as Timestamp?,
       updatedAt: map['updatedAt'] as Timestamp?,
       isProfileComplete: map['isProfileComplete'] ?? false,
@@ -41,6 +44,7 @@ class UserModel {
       'email': email,
       'phoneNumber': phoneNumber,
       'role': role,
+      'phtoURL': photoURL,
       'isProfileComplete': isProfileComplete,
       'createdAt': createdAt,
       'updatedAt': updatedAt,

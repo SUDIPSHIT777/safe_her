@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safe_her/features/auth/storelogin.dart';
+import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/features/splashscreen/splashwidget.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -32,6 +32,7 @@ class _SplashscreenState extends State<Splashscreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 10),
                   Center(
                     child: Image.asset(
                       'assets/splashlogo.png',
@@ -69,9 +70,8 @@ class _SplashscreenState extends State<Splashscreen> {
                       children: [
                         Expanded(
                           child: Divider(
-                            color: themecolor.onSurfaceVariant.withValues(
-                              alpha: 0.2,
-                            ),
+                            thickness: 2,
+                            color: themecolor.primary.withValues(alpha: 0.5),
                           ),
                         ),
                         Image.asset(
@@ -82,9 +82,8 @@ class _SplashscreenState extends State<Splashscreen> {
                         ),
                         Expanded(
                           child: Divider(
-                            color: themecolor.onSurfaceVariant.withValues(
-                              alpha: 0.2,
-                            ),
+                            thickness: 2,
+                            color: themecolor.primary.withValues(alpha: 0.5),
                           ),
                         ),
                       ],
@@ -111,27 +110,47 @@ class _SplashscreenState extends State<Splashscreen> {
                     ],
                   ),
                   SizedBox(height: 30),
-                  Center(
-                    child: CircularProgressIndicator(color: themecolor.primary),
+                  SizedBox(
+                    width: 200,
+                    height: 5,
+                    child: LinearProgressIndicator(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
+
                   SizedBox(height: 30),
-                  AutoSizeText(
-                    "You are not alone",
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: themecolor.onSurface,
-                    ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/treeimg.png',
+                        width: double.infinity,
+                        fit: BoxFit.contain,
+                      ),
+
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AutoSizeText(
+                            "You are not alone",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: themecolor.onSurface,
+                            ),
+                          ),
+                          AutoSizeText(
+                            "We are with you.",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: themecolor.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  AutoSizeText(
-                    "We are with you.",
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: themecolor.primary,
-                    ),
-                  ),
-                  Image.asset('assets/splashimg.png', width: double.infinity),
                   SizedBox(height: 20),
                 ],
               ),
