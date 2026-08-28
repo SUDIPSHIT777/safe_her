@@ -16,10 +16,7 @@ Widget customGradientButton({
     height: 57,
     decoration: BoxDecoration(
       gradient: LinearGradient(
-        colors: [
-          themecolor.primary,
-          themecolor.secondary,
-        ],
+        colors: [themecolor.primary, themecolor.secondary],
       ),
       borderRadius: BorderRadius.circular(15),
     ),
@@ -51,6 +48,7 @@ Widget customGradientButton({
     ),
   );
 }
+
 // ================= Google Button ===================
 Widget googleButton({
   required BuildContext context,

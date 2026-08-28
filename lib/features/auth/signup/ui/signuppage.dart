@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +8,7 @@ import 'package:safe_her/features/auth/signup/controller/signupcontroller.dart';
 import 'package:safe_her/features/auth/signup/controller/signupvalidation.dart';
 import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/shared_widget/coustombutton.dart';
+import 'package:safe_her/shared_widget/snackbar.dart';
 import 'package:safe_her/shared_widget/textformfield.dart';
 
 class Signuppage extends StatefulWidget {
@@ -205,45 +203,37 @@ class _SignuppageState extends State<Signuppage> {
                 ),
                 SizedBox(height: 20),
                 Consumer<Signupcontroller>(
-                  builder: (context, value, child) {
+                  builder: (context, signupcontroller, child) {
                     return customGradientButton(
                       context: context,
                       text: "Sign Up",
-                      isLoading: value.signuploading,
-
-                      onPressed: value.signuploading
+                      isLoading: signupcontroller.signuploading,
+                      onPressed: signupcontroller.signuploading
                           ? null
                           : () async {
                               if (!formKey.currentState!.validate()) return;
 
-                              try {
-                                final user = await value.userSignup(
-                                  name: username.text.trim(),
-                                  email: email.text.trim(),
-                                  phone: phone.text.trim(),
-                                  password: password.text.trim(),
-                                );
-
-                                if (user == null || !context.mounted) return;
-
-                                await StoreloginInfo.setlogin();
-
-                                if (!context.mounted) return;
+                              final success = await signupcontroller.userSignup(
+                                name: username.text,
+                                email: email.text,
+                                phone: phone.text,
+                                password: password.text,
+                              );
+                              if (!context.mounted) return;
+                              if (success) {
                                 context.go('/splash');
-                              } on FirebaseAuthException catch (e) {
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.message ?? 'Signup failed'),
-                                  ),
+                                showCustomSnackBar(
+                                  context,
+                                  icon: Icons.location_searching_rounded,
+                                  message: 'Login Successfully 👍!',
+                                  color: Colors.green,
                                 );
-                              } catch (e) {
-                                log('SIGNUP ERROR: $e');
-
-                                if (!context.mounted) return;
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Signup failed: $e')),
+                              } else {
+                                showCustomSnackBar(
+                                  context,
+                                  icon: Icons.error_outline_rounded,
+                                  message: "${signupcontroller.errorMessage}",
+                                  color: themecolor.error,
                                 );
                               }
                             },
