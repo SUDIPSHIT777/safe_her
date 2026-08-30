@@ -16,13 +16,14 @@ class Validators {
   // =========== Email Validation =========
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter your email';
+      return 'Please enter your email or phone number';
     }
+    final input = value.trim();
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$');
-    if (!emailRegex.hasMatch(value.trim())) {
-      return 'Please enter a valid email';
+    final phoneRegex = RegExp(r'^[6-9]\d{9}$');
+    if (!emailRegex.hasMatch(input) && !phoneRegex.hasMatch(input)) {
+      return 'Enter a valid email or phone number';
     }
-
     return null;
   }
 

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
-import 'package:safe_her/features/auth/signup/controller/signupservice.dart';
+import 'package:safe_her/features/auth/controller/signupservice.dart';
 
 class Signupcontroller extends ChangeNotifier {
   final SignupService signupService = SignupService();

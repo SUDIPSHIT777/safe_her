@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_her/features/auth/controller/logincontroller.dart';
+import 'package:safe_her/features/auth/controller/loginservice.dart';
+import 'package:safe_her/features/auth/controller/validators.dart';
 import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
+import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/shared_widget/coustombutton.dart';
+import 'package:safe_her/shared_widget/snackbar.dart';
 import 'package:safe_her/shared_widget/textformfield.dart';
 
 class Loginpage extends StatelessWidget {
@@ -17,6 +22,7 @@ class Loginpage extends StatelessWidget {
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final Loginservice loginservice = Loginservice();
     return Scaffold(
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -95,6 +101,7 @@ class Loginpage extends StatelessWidget {
                         ),
                         customTextField(
                           context,
+                          validator: (v) => Validators.validateEmail(v),
                           controller: email,
                           hintText: "Enter email or phone number",
                           keyboardType: TextInputType.text,
@@ -110,14 +117,24 @@ class Loginpage extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        customTextField(
-                          context,
-                          controller: password,
-                          hintText: "Enter password",
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          prefixIcon: Icons.lock,
-                          suffixIcon: Icon(Icons.visibility_off),
+                        Consumer<LoginController>(
+                          builder: (context, value, child) => customTextField(
+                            context,
+                            controller: password,
+                            validator: (v) => Validators.validatePassword(v),
+                            hintText: "Enter password",
+                            keyboardType: TextInputType.text,
+                            obscureText: value.visibility,
+                            prefixIcon: Icons.lock,
+                            suffixIcon: IconButton(
+                              onPressed: () => value.switchOnOff(),
+                              icon: Icon(
+                                value.visibility
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -127,20 +144,59 @@ class Loginpage extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 12),
                   child: Align(
                     alignment: AlignmentGeometry.bottomRight,
-                    child: Text(
-                      "Forget Password?",
-                      style: GoogleFonts.poppins(
-                        color: Colors.deepPurpleAccent,
-                        fontWeight: FontWeight.w500,
+                    child: GestureDetector(
+                      onTap: () {
+                        loginservice.forgotPassword(email.text);
+                      },
+                      child: Text(
+                        "Forget Password?",
+                        style: GoogleFonts.poppins(
+                          color: Colors.deepPurpleAccent,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                customGradientButton(
-                  context: context,
-                  onPressed: () {},
-                  text: "Login",
+                Consumer<LoginController>(
+                  builder: (context, loginController, child) {
+                    return customGradientButton(
+                      context: context,
+                      text: "Login",
+                      isLoading: loginController.isLoading,
+                      onPressed: loginController.isLoading
+                          ? null
+                          : () async {
+                              if (!formKey.currentState!.validate()) {
+                                return;
+                              }
+                              final success = await loginController.login(
+                                emailOrPhone: email.text,
+                                password: password.text,
+                              );
+                              if (!context.mounted) return;
+                              if (success) {
+                                await StoreloginInfo.setlogin();
+                                if (!context.mounted) return;
+                                context.go('/splash');
+                                showCustomSnackBar(
+                                  context,
+                                  icon: Icons.location_searching_rounded,
+                                  message: 'Login Successfully 👍!',
+                                  color: Colors.green,
+                                );
+                              } else {
+                                showCustomSnackBar(
+                                  context,
+                                  icon: Icons.error_outline_rounded,
+                                  message: "${loginController.errorMessage}",
+                                  color: themecolor.error,
+                                );
+                              }
+                            },
+                    );
+                  },
                 ),
 
                 Row(
@@ -204,9 +260,31 @@ class Loginpage extends StatelessWidget {
                       context: context,
                       onPressed: () async {
                         final user = await googlelogin.googleSignin();
-                        if (user != null && context.mounted) {
-                          context.go('/home');
+
+                        if (user == null) {
+                          if (!context.mounted) return;
+                          showCustomSnackBar(
+                            context,
+                            icon: Icons.error_outline_rounded,
+                            message: 'Google login failed. Please try again.',
+                            color: themecolor.error,
+                          );
+                          return;
                         }
+                        await StoreloginInfo.setlogin();
+                        if (!context.mounted) return;
+                        showCustomSnackBar(
+                          context,
+                          icon: Icons.check_circle_outline_rounded,
+                          message: 'Google login successful 👍!',
+                          color: Colors.green,
+                        );
+                        await Future.delayed(
+                          const Duration(milliseconds: 1200),
+                        );
+
+                        if (!context.mounted) return;
+                        context.go('/splash');
                       },
                     );
                   },

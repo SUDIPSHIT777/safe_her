@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_her/features/auth/controller/loginservice.dart';
+import 'package:safe_her/features/auth/controller/validators.dart';
 import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
-import 'package:safe_her/features/auth/signup/controller/signupcontroller.dart';
-import 'package:safe_her/features/auth/signup/controller/signupvalidation.dart';
+import 'package:safe_her/features/auth/controller/signupcontroller.dart';
 import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/shared_widget/coustombutton.dart';
 import 'package:safe_her/shared_widget/snackbar.dart';
@@ -24,6 +25,7 @@ class _SignuppageState extends State<Signuppage> {
   final TextEditingController phone = TextEditingController();
   final TextEditingController password = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final Loginservice loginservice = Loginservice();
   @override
   Widget build(BuildContext context) {
     final themecolor = Theme.of(context).colorScheme;
@@ -192,11 +194,16 @@ class _SignuppageState extends State<Signuppage> {
                   padding: const EdgeInsets.only(right: 12),
                   child: Align(
                     alignment: AlignmentGeometry.bottomRight,
-                    child: Text(
-                      "Forget Password?",
-                      style: GoogleFonts.poppins(
-                        color: Colors.deepPurpleAccent,
-                        fontWeight: FontWeight.w500,
+                    child: GestureDetector(
+                      onTap: () {
+                        loginservice.forgotPassword(email.text);
+                      } ,
+                      child: Text(
+                        "Forget Password?",
+                        style: GoogleFonts.poppins(
+                          color: Colors.deepPurpleAccent,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -212,15 +219,17 @@ class _SignuppageState extends State<Signuppage> {
                           ? null
                           : () async {
                               if (!formKey.currentState!.validate()) return;
-
                               final success = await signupcontroller.userSignup(
                                 name: username.text,
                                 email: email.text,
                                 phone: phone.text,
                                 password: password.text,
                               );
+
                               if (!context.mounted) return;
                               if (success) {
+                                await StoreloginInfo.setlogin();
+                                if (!context.mounted) return;
                                 context.go('/splash');
                                 showCustomSnackBar(
                                   context,
@@ -301,10 +310,30 @@ class _SignuppageState extends State<Signuppage> {
                       context: context,
                       onPressed: () async {
                         final user = await googlelogin.googleSignin();
-                        if (user == null) return;
+
+                        if (user == null) {
+                          if (!context.mounted) return;
+                          showCustomSnackBar(
+                            context,
+                            icon: Icons.error_outline_rounded,
+                            message: 'Google login failed. Please try again.',
+                            color: themecolor.error,
+                          );
+                          return;
+                        }
                         await StoreloginInfo.setlogin();
                         if (!context.mounted) return;
-                        context.go('/home');
+                        showCustomSnackBar(
+                          context,
+                          icon: Icons.check_circle_outline_rounded,
+                          message: 'Google login successful 👍!',
+                          color: Colors.green,
+                        );
+                        await Future.delayed(
+                          const Duration(milliseconds: 1200),
+                        );
+                        if (!context.mounted) return;
+                        context.go('/splash');
                       },
                     );
                   },

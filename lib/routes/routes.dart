@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:safe_her/features/auth/login/ui/loginpage.dart';
-import 'package:safe_her/features/auth/signup/ui/signuppage.dart';
+import 'package:safe_her/features/auth/login/loginpage.dart';
+import 'package:safe_her/features/auth/signup/signuppage.dart';
 import 'package:safe_her/features/home/ui/homepage.dart';
 import 'package:safe_her/features/splashscreen/splashscreen.dart';
 
