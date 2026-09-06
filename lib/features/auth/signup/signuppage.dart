@@ -195,9 +195,7 @@ class _SignuppageState extends State<Signuppage> {
                   child: Align(
                     alignment: AlignmentGeometry.bottomRight,
                     child: GestureDetector(
-                      onTap: () {
-                        loginservice.forgotPassword(email.text);
-                      } ,
+                      onTap: () {},
                       child: Text(
                         "Forget Password?",
                         style: GoogleFonts.poppins(

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_her/features/auth/controller/logincontroller.dart';
-import 'package:safe_her/features/auth/controller/loginservice.dart';
 import 'package:safe_her/features/auth/controller/validators.dart';
 import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
 import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
@@ -22,7 +21,6 @@ class Loginpage extends StatelessWidget {
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final Loginservice loginservice = Loginservice();
     return Scaffold(
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -146,7 +144,7 @@ class Loginpage extends StatelessWidget {
                     alignment: AlignmentGeometry.bottomRight,
                     child: GestureDetector(
                       onTap: () {
-                        loginservice.forgotPassword(email.text);
+                       
                       },
                       child: Text(
                         "Forget Password?",

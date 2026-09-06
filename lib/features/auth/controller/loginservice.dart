@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -70,11 +68,4 @@ class Loginservice {
     }
   }
 
-  Future<void> forgotPassword(String email) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
-    } on FirebaseAuthException catch (e) {
-      log(e.toString());
-    }
-  }
 }
