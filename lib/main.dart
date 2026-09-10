@@ -7,6 +7,7 @@ import 'package:safe_her/core/theme/theme.dart';
 import 'package:safe_her/features/auth/controller/logincontroller.dart';
 import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
 import 'package:safe_her/features/auth/controller/signupcontroller.dart';
+import 'package:safe_her/features/home/controller/userprovider.dart';
 import 'package:safe_her/firebase_options.dart';
 import 'package:safe_her/routes/routes.dart';
 
@@ -21,6 +22,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => Googlecontroller()),
         ChangeNotifierProvider(create: (context) => Signupcontroller()),
         ChangeNotifierProvider(create: (context) => LoginController()),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider()..loadUserData(),
+        ),
       ],
       child: const MyApp(),
     ),

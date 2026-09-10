@@ -11,7 +11,7 @@ class AppTheme {
   // Background Colors
   static const Color background = Color(0xFFFEFDFE);
   static const Color surface = Color(0xFFFCF7FA);
-  static const Color softPink = Color(0xFFFBE7F0);
+  static const Color softPink = Color(0xFFFEF3F7);
   static const Color lightPink = Color(0xFFF8CCDA);
 
   // Text Colors
@@ -42,7 +42,7 @@ class AppTheme {
 
     // PRIMARY
     primary: primary,
-    onPrimary: Colors.white,
+    onPrimary: Color(0xFFFFFEFF),
     primaryContainer: softPink,
     onPrimaryContainer: textDark,
 
@@ -94,8 +94,8 @@ class AppTheme {
 
     // Primary
     primary: Color(0xFFFF82A5),
-    onPrimary: Color(0xFF4A001D),
-    primaryContainer: Color(0xFF68002B),
+    onPrimary: Color(0xFF111219),
+    primaryContainer: Color(0xFF1B1C2A),
     onPrimaryContainer: Color(0xFFFFD9E3),
 
     // Secondary
@@ -116,7 +116,7 @@ class AppTheme {
 
     // Surface Containers
     surfaceContainerLowest: darkBackground,
-    surfaceContainerLow: darkSurfaceLow,
+    surfaceContainerLow: Color(0xFF0E1419),
     surfaceContainer: darkSurface,
     surfaceContainerHigh: darkSurfaceHigh,
     surfaceContainerHighest: Color(0xFF37303F),
@@ -143,10 +143,24 @@ class AppTheme {
     useMaterial3: true,
     colorScheme: AppTheme.light,
     scaffoldBackgroundColor: AppTheme.background,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppTheme.background,
+      foregroundColor: AppTheme.textPrimary,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
+    ),
   );
   static ThemeData get darkTheme => ThemeData(
     useMaterial3: true,
     colorScheme: AppTheme.dark,
     scaffoldBackgroundColor: AppTheme.darkBackground,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppTheme.darkBackground,
+      foregroundColor: AppTheme.darkTextPrimary,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
+    ),
   );
 }

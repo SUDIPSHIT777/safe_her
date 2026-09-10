@@ -22,7 +22,6 @@ class _SplashscreenState extends State<Splashscreen> {
   Widget build(BuildContext context) {
     final themecolor = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
           child: ConstrainedBox(
