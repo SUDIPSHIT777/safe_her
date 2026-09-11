@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_her/core/theme/theme.dart';
 import 'package:safe_her/features/auth/googlelogin/googlelogin.dart';
 import 'package:safe_her/features/auth/googlelogin/storelogin.dart';
 import 'package:safe_her/features/home/controller/userprovider.dart';
@@ -123,7 +125,39 @@ class Mydrawer extends StatelessWidget {
                         ? firestoreUser!.phoneNumber!
                         : 'No number found',
                   ),
-
+                  Divider(),
+                  Consumer<ThemeController>(
+                    builder: (context, value, child) => Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 17,
+                      mainAxisAlignment: .start,
+                      children: [
+                        Icon(Icons.dark_mode, color: const Color(0xFFF9437A)),
+                        Text(
+                          "Theme Mode",
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Switch(
+                          value: value.isdarkMode,
+                          onChanged: (v) => value.chnageTheme(),
+                          inactiveThumbColor: Colors.white,
+                          inactiveTrackColor: Colors.black.withValues(
+                            alpha: 0.3,
+                          ),
+                          thumbIcon: WidgetStatePropertyAll(
+                            Icon(
+                              value.isdarkMode
+                                  ? Icons.dark_mode
+                                  : Icons.light_mode,
+                              color: const Color(0xFFF9437A),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const Spacer(),
                   customGradientButton(
                     context: context,
@@ -167,14 +201,17 @@ class Mydrawer extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
 
                 const SizedBox(height: 4),
 
                 Text(
                   value,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: themecolor.inverseSurface,

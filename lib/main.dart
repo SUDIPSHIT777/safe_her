@@ -8,6 +8,7 @@ import 'package:safe_her/features/auth/controller/logincontroller.dart';
 import 'package:safe_her/features/auth/googlelogin/googlecontroller.dart';
 import 'package:safe_her/features/auth/controller/signupcontroller.dart';
 import 'package:safe_her/features/home/controller/userprovider.dart';
+import 'package:safe_her/features/legal/ui/leagelshield.dart';
 import 'package:safe_her/firebase_options.dart';
 import 'package:safe_her/routes/routes.dart';
 
@@ -25,6 +26,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => UserProvider()..loadUserData(),
         ),
+        ChangeNotifierProvider(create: (context) => ThemeController()),
       ],
       child: const MyApp(),
     ),
@@ -35,9 +37,18 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    // return Consumer<ThemeController>(
+    //   builder: (context, value, child) => MaterialApp.router(
+    //     debugShowCheckedModeBanner: false,
+    //     routerConfig: Routes.router,
+    //     theme: AppTheme.lightTheme,
+    //     darkTheme: AppTheme.darkTheme,
+    //     themeMode: value.isdarkMode ? ThemeMode.dark : ThemeMode.light,
+    //   ),
+    // );
+    return MaterialApp(
+      home: Leagelshield(),
       debugShowCheckedModeBanner: false,
-      routerConfig: Routes.router,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,

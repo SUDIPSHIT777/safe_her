@@ -164,3 +164,12 @@ class AppTheme {
     ),
   );
 }
+
+class ThemeController extends ChangeNotifier {
+  bool _isdarkMode = false;
+  bool get isdarkMode => _isdarkMode;
+  void chnageTheme() {
+    _isdarkMode = !isdarkMode;
+    notifyListeners();
+  }
+}
